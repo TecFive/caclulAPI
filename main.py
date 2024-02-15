@@ -1,13 +1,20 @@
 from fastapi import FastAPI
 
+from CalculateRequest import CalculateRequest
+
 app = FastAPI()
 
 
-@app.post("/sumar")
-async def root():
-    return {"message": "Hello World"}
-
-
-@app.post("/restar")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+@app.post("/calculate")
+async def calculate(request: CalculateRequest):
+    match request.operation:
+        case "+":
+            return request.a + request.b
+        case "-":
+            return request.a - request.b
+        case "*":
+            return request.a * request.b
+        case "/":
+            return request.a / request.b
+        case _:
+            return "Invalid operation"
